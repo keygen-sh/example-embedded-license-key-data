@@ -63,7 +63,7 @@ To generate a signed license key, run the `generate` script, passing in the some
 `data` to embed within the signed key:
 
 ```
-yarn start generate --data '{"example":{"json":"embedded-data"}}'
+yarn start generate --data '{"customer":{"name":"ACME Co."},"expiry":1575393876}'
 ```
 
 ## Generating a license key
