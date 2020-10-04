@@ -24,7 +24,7 @@ async function verifyPolicyScheme(policyId) {
     throw new Error(`Failed to retrieve policy!\n${msg}`)
   }
 
-  return data.attributes.scheme === 'RSA_2048_PKCS1_PSS_SIGN'
+  return data.attributes.scheme === 'RSA_2048_PKCS1_PSS_SIGN_V2'
 }
 
 async function main() {
@@ -73,7 +73,7 @@ async function main() {
       // Verify the policy is using the correct scheme
       const ok = await verifyPolicyScheme(KEYGEN_POLICY_ID)
       if (!ok) {
-        throw new Error(`Policy ${KEYGEN_POLICY_ID} is not using RSA_2048_PKCS1_PSS_SIGN scheme!`)
+        throw new Error(`Policy ${KEYGEN_POLICY_ID} is not using RSA_2048_PKCS1_PSS_SIGN_V2 scheme!`)
       }
 
       // Generate a new license key
@@ -135,17 +135,21 @@ async function main() {
       }
 
       // Extract key and signature from the license key string
-      const [enc, sig] = key.split('.')
+      const [signingData, encodedSig] = key.split('.')
+      const [signingPrefix, encodedKey] = signingData.split('/')
+      if (signingPrefix !== 'key') {
+        throw new Error(`License key prefix is invalid: ${signingPrefix}!`)
+      }
 
       // Decode the base64 encoded key
-      const dec = Buffer.from(enc, 'base64').toString()
+      const dec = Buffer.from(encodedKey, 'base64').toString()
 
       // Verify the signature of the key
       const verifier = crypto.createVerify('sha256')
-      verifier.write(dec)
+      verifier.write(`key/${encodedKey}`)
       verifier.end()
 
-      const ok = verifier.verify({ key: KEYGEN_PUBLIC_KEY, padding: crypto.constants.RSA_PKCS1_PSS_PADDING }, sig, 'base64')
+      const ok = verifier.verify({ key: KEYGEN_PUBLIC_KEY, padding: crypto.constants.RSA_PKCS1_PSS_PADDING }, encodedSig, 'base64')
       if (ok) {
         console.log(chalk.green(`License key is cryptographically valid!`))
         console.log(chalk.gray(`Embedded data: ${dec}`))

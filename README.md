@@ -10,7 +10,7 @@ licensing model. For example, you can embed privileges and expirys within the li
 key which can be extracted offline. All that is needed to cryptographically verify
 a license and extract the embedded data is your account's public key.
 
-**For this example, the license's policy _must_ implement the `RSA_2048_PKCS1_PSS_SIGN`
+**For this example, the license's policy _must_ implement the `RSA_2048_PKCS1_PSS_SIGN_V2`
 scheme. This example _does not_ cover any other schemes at this time.**
 
 ## Running the example
@@ -51,11 +51,11 @@ policy with the following `scheme` attribute:
 
 ```javascript
 {
-  scheme: 'RSA_2048_PKCS1_PSS_SIGN'
+  scheme: 'RSA_2048_PKCS1_PSS_SIGN_V2'
 }
 ```
 
-**This example _must_ use the `RSA_2048_PKCS1_PSS_SIGN` scheme.**
+**This example _must_ use the `RSA_2048_PKCS1_PSS_SIGN_V2` scheme.**
 
 ## Generating a license key
 
@@ -72,7 +72,7 @@ Then to verify the key, run the `verify` script, passing in the _entire_ signed
 `key` you received from the `generate` step above:
 
 ```
-yarn start verify --key 'SOME_SIGNED.LICENSE_KEY_HERE'
+yarn start verify --key 'key/SOME_SIGNED.LICENSE_KEY_HERE'
 ```
 
 The license key will be cryptographically verified and if valid, the key's embedded
