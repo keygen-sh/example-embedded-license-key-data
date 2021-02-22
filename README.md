@@ -5,7 +5,7 @@ RSA public key. You can find your public key within
 [your account's settings page](https://app.keygen.sh/settings).
 
 Embedding data within cryptographically signed licenses can be used to implement
-robuest offline licensing models, as well as adding additional security to your
+various offline licensing models, as well as add additional security to your
 licensing model. For example, you can embed privileges and expirys within the license's
 key which can be extracted offline. All that is needed to cryptographically verify
 a license and extract the embedded data is your account's public key.
