@@ -66,7 +66,7 @@ To generate a signed license key, run the `generate` script, passing in the some
 yarn start generate --data '{"customer":{"name":"ACME Co."},"expiry":1575393876}'
 ```
 
-## Generating a license key
+## Verifying a license key
 
 Then to verify the key, run the `verify` script, passing in the _entire_ signed
 `key` you received from the `generate` step above:
